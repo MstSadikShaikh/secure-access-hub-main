@@ -60,7 +60,7 @@ const LANGUAGES: LanguageOption[] = [
   }
 ];
 
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
+const CHAT_URL = "/api/chat";
 
 // Clean text for TTS - remove markdown and special characters
 const cleanTextForSpeech = (text: string): string => {
