@@ -1,0 +1,25 @@
+project_id = "tbxxfwqbyztlwbvmkwrd"
+
+[functions.detect-phishing]
+verify_jwt = false
+
+[functions.analyze-transaction]
+verify_jwt = false
+
+[functions.chat]
+verify_jwt = false
+
+[functions.pre-analyze-transaction]
+verify_jwt = false
+
+[functions.elevenlabs-tts]
+verify_jwt = false
+
+[functions.send-email-notification]
+verify_jwt = false
+
+[functions.send-otp]
+verify_jwt = false
+
+[functions.trigger-sos]
+verify_jwt = false

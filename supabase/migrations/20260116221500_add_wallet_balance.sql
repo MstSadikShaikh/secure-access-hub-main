@@ -1,0 +1,1 @@
+ALTER TABLE profiles ADD COLUMN wallet_balance DECIMAL(12, 2) DEFAULT 10000.00;
