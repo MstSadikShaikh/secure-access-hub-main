@@ -12,6 +12,9 @@ const ALLOWED_ORIGINS = [
   /^https:\/\/.*\.lovableproject\.com$/,
   /^https:\/\/.*\.lovable\.app$/,
   /^http:\/\/localhost:\d+$/,
+  /^https:\/\/.*\.vercel\.app$/,
+  /^https:\/\/.*\.netlify\.app$/,
+  "https://fruad-guard-ai.vercel.app",
 ];
 
 function isOriginAllowed(origin: string | null): boolean {

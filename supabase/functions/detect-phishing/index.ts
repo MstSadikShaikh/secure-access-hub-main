@@ -13,6 +13,7 @@ const ALLOWED_ORIGINS = [
   "http://localhost:3000",
   "https://lovable.dev",
   "https://gptengineer.app",
+  "https://fruad-guard-ai.vercel.app",
 ];
 
 function isOriginAllowed(origin: string | null): boolean {
@@ -20,6 +21,9 @@ function isOriginAllowed(origin: string | null): boolean {
   return (
     ALLOWED_ORIGINS.some((allowed) => origin.startsWith(allowed)) ||
     origin.includes("lovableproject.com") ||
+    origin.includes("lovable.app") ||
+    origin.includes("vercel.app") ||
+    origin.includes("netlify.app") ||
     origin.includes("webcontainer.io")
   );
 }
@@ -678,7 +682,7 @@ Deno.serve(async (req: Request) => {
     // Determine risk category
     let recommendation: "safe" | "caution" | "block";
     let riskCategory: string;
-    
+
     if (deterministicResult.riskScore >= 0.81) {
       recommendation = "block";
       riskCategory = "critical";
@@ -804,7 +808,7 @@ Provide a brief (2-3 sentences) explanation of why this might be dangerous for a
             },
             { onConflict: "domain" }
           );
-        
+
         if (!upsertError) {
           console.log(`Auto-added domain to blacklist: ${domain}`);
         }

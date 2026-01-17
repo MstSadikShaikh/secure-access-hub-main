@@ -11,6 +11,9 @@ const ALLOWED_ORIGINS = [
   /^https:\/\/.*\.lovableproject\.com$/,
   /^https:\/\/.*\.lovable\.app$/,
   /^http:\/\/localhost:\d+$/,
+  /^https:\/\/.*\.vercel\.app$/,
+  /^https:\/\/.*\.netlify\.app$/,
+  "https://fruad-guard-ai.vercel.app",
 ];
 
 function isOriginAllowed(origin: string | null): boolean {
@@ -73,14 +76,14 @@ function calculateSimilarity(str1: string, str2: string): number {
   const s2 = str2.toLowerCase();
   if (s1 === s2) return 1;
   if (s1.length === 0 || s2.length === 0) return 0;
-  
+
   const m = s1.length;
   const n = s2.length;
   const dp: number[][] = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
-  
+
   for (let i = 0; i <= m; i++) dp[i][0] = i;
   for (let j = 0; j <= n; j++) dp[0][j] = j;
-  
+
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
       if (s1[i - 1] === s2[j - 1]) {
@@ -90,7 +93,7 @@ function calculateSimilarity(str1: string, str2: string): number {
       }
     }
   }
-  
+
   return 1 - dp[m][n] / Math.max(m, n);
 }
 
@@ -142,7 +145,7 @@ function performDeterministicAnalysis(
     const similarity = calculateSimilarity(c.upi_id, receiverUpi);
     return similarity > 0.7 && similarity < 1;
   });
-  
+
   if (similarContacts.length > 0) {
     riskScore += 0.3;
     fraudCategory = 'impersonation';
@@ -240,7 +243,7 @@ serve(async (req: Request) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-    
+
     // Use ANON_KEY with user's JWT to respect RLS policies
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       global: {
@@ -313,12 +316,12 @@ serve(async (req: Request) => {
     const trustedContacts = trustedContactsResult.data || [];
 
     // Sanitize user history
-    const sanitizedHistory = Array.isArray(userHistory) 
+    const sanitizedHistory = Array.isArray(userHistory)
       ? userHistory.slice(0, 20).map(h => ({
-          amount: typeof h.amount === 'number' ? h.amount : 0,
-          receiver_upi_id: typeof h.receiver_upi_id === 'string' ? h.receiver_upi_id : '',
-          created_at: typeof h.created_at === 'string' ? h.created_at : ''
-        }))
+        amount: typeof h.amount === 'number' ? h.amount : 0,
+        receiver_upi_id: typeof h.receiver_upi_id === 'string' ? h.receiver_upi_id : '',
+        created_at: typeof h.created_at === 'string' ? h.created_at : ''
+      }))
       : [];
 
     // Perform deterministic analysis
