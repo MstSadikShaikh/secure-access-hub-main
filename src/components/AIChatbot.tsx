@@ -60,7 +60,7 @@ const LANGUAGES: LanguageOption[] = [
   }
 ];
 
-const CHAT_URL = "/api/chat";
+const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 
 // Clean text for TTS - remove markdown and special characters
 const cleanTextForSpeech = (text: string): string => {
@@ -155,6 +155,8 @@ export function AIChatbot({ inline = false }: AIChatbotProps) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+          Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
           messages: [...messages, userMessage],
